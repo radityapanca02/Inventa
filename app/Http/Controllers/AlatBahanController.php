@@ -9,29 +9,32 @@ class AlatBahanController extends Controller
 {
     public function index()
     {
-        $alat = AlatBahan::latest()->paginate(10);
+        $alat = AlatBahan::paginate(10);
         return Inertia::render('AlatBahan/Index', [
-            'alat' => $alat
+            'alat' => $alat,
+            'flash' => session()->get('flash') // Pastikan ini ada
         ]);
     }
 
     public function create()
     {
-        return Inertia::render('AlatBahan/Create');
+        return Inertia::render('AlatBahan/Tambah');
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_alat' => 'required|string|max:100',
-            'jenis' => 'required|string',
-            'kondisi' => 'required|in:baik,rusak,hilang',
-            'jumlah' => 'required|integer|min:1',
+        $validated = $request->validate([
+            'nama_alat' => 'required|string|max:255',
+            'jenis' => 'required|in:alat,bahan',
+            'kondisi' => 'required|in:baik,rusak,baru,hilang',
+            'jumlah' => 'required|integer|min:0',
+            'deskripsi' => 'required|string',
         ]);
 
-        AlatBahan::create($request->all());
+        AlatBahan::create($validated);
 
-        return redirect()->route('alat.index')->with('success', 'Alat berhasil ditambahkan.');
+        return redirect()->route('alat.index')
+            ->with('success', 'Alat/Bahan berhasil ditambahkan!');
     }
 
     public function edit(AlatBahan $alat)
@@ -46,13 +49,17 @@ class AlatBahanController extends Controller
         $request->validate([
             'nama_alat' => 'required|string|max:100',
             'jenis' => 'required|string',
-            'kondisi' => 'required|in:baik,rusak,hilang',
+            'kondisi' => 'required|in:baik,rusak,hilang,baru',
             'jumlah' => 'required|integer|min:1',
+            'deskripsi' => 'string',
         ]);
 
         $alat->update($request->all());
 
-        return redirect()->route('alat.index')->with('success', 'Alat berhasil diperbarui.');
+        return redirect()->route('alat.index')
+            ->with('flash', [
+                'success' => 'Alat/Bahan berhasil diperbarui!'
+            ]);
     }
 
     public function destroy(AlatBahan $alat)

@@ -12,10 +12,11 @@ class AlatBahan extends Model
     protected $table = 'alat_bahans';
     protected $primaryKey = 'id_alat';
 
-    protected $fillabe = [
+    protected $fillable = [
         'nama_alat',
         'jenis',
         'kondisi',
         'jumlah',
+        'deskripsi',
     ];
 }

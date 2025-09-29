@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('jenis', 23);
             $table->enum('kondisi', ['baik', 'baru', 'hilang', 'rusak'])->default('baik');
             $table->integer('jumlah');
+            $table->text('deskripsi');
             $table->timestamps();
         });
     }
