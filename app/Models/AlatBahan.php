@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class AlatBahan extends Model
 {
@@ -11,12 +11,25 @@ class AlatBahan extends Model
 
     protected $table = 'alat_bahans';
     protected $primaryKey = 'id_alat';
-
     protected $fillable = [
         'nama_alat',
         'jenis',
         'kondisi',
         'jumlah',
-        'deskripsi',
+        'deskripsi'
     ];
+
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class, 'id_peminjaman');
+    }
+
+    public function getJumlahTersediaAttribute()
+    {
+        $dipinjam = $this->peminjaman()
+            ->whereIn('status', ['disetujui', 'dipinjam'])
+            ->sum('jumlah_pinjam');
+            
+        return $this->jumlah - $dipinjam;
+    }
 }

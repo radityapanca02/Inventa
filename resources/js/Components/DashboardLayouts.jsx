@@ -36,7 +36,7 @@ export default function DashboardLayouts({ children }) {
                         Alat & Bahan
                     </Link>
                     <Link
-                        href="#"
+                        href="/peminjaman"
                         className="flex items-center p-2 rounded-lg hover:bg-blue-100"
                     >
                         <ClipboardList className="w-5 h-5 mr-2" />

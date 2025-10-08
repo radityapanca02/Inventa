@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('peminjams', function (Blueprint $table) {
             $table->id('id_peminjam');
             $table->string('nama_peminjam', 100);
+            $table->string('email', 100)->nullable();
             $table->string('kontak', 20);
+            $table->string('alamat')->nullable();
+            $table->string('instansi', 100)->nullable();
             $table->string('alasan', 255);
+            $table->enum('status', ['active', 'blocked'])->default('active');
             $table->timestamps();
         });
     }
